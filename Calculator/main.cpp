@@ -2,16 +2,18 @@
 #include <iostream>
 
 #include "Calculator.h"
-#include "Symbol.h"
+
 
 int main()
 {
 	Calculator calculator;
-	string input;
-
-	while (getline(cin, input))
+	string str = "1+ 2*3- 4";
+	vector<string> str_tokenized;
+	int num = calculator.Tokenize(str, str_tokenized);
+	
+	while (true)
 	{
-		calculator.EvaluateExpression(input);
+
 	}
 
 	return EXIT_SUCCESS;
