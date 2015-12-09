@@ -1,0 +1,23 @@
+﻿Build started 09/12/2015 23:14:46.
+     1>Project "C:\Users\Maria\Documents\GitHub\calculator\calculator\Calculator\Calculator.vcxproj" on node 2 (Build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\Calculator.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Calculator.cpp main.cpp Symbol.cpp
+         Symbol.cpp
+         main.cpp
+         Calculator.cpp
+         Generating Code...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Maria\Documents\GitHub\calculator\calculator\Debug\Calculator.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Maria\Documents\GitHub\calculator\calculator\Debug\Calculator.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Maria\Documents\GitHub\calculator\calculator\Debug\Calculator.lib" /MACHINE:X86 Debug\Calculator.obj
+         Debug\main.obj
+         Debug\Symbol.obj
+         Calculator.vcxproj -> C:\Users\Maria\Documents\GitHub\calculator\calculator\Debug\Calculator.exe
+       FinalizeBuildStatus:
+         Deleting file "Debug\Calculator.tlog\unsuccessfulbuild".
+         Touching "Debug\Calculator.tlog\Calculator.lastbuildstate".
+     1>Done Building Project "C:\Users\Maria\Documents\GitHub\calculator\calculator\Calculator\Calculator.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.87
