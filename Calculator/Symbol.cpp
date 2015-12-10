@@ -8,7 +8,7 @@ Number::Number(const string& str)
 	mNumber = stod(str);
 }
 
-bool Symbol::CheckNumber(const string& symbol)
+bool Symbol::IsNumber(const string& symbol)
 {
 	regex decimal("((([[:digit:]]+)?)\\.)?([[:digit:]]+)");
 	if (regex_match(symbol, decimal))
@@ -17,17 +17,15 @@ bool Symbol::CheckNumber(const string& symbol)
 	}
 	else
 	{
-		cerr << "ERROR: CheckNumber() - Number '" << symbol << "' not recognised" << endl;
 		return false;
 	}
 }
 
-bool Symbol::CheckOperator(const string& symbol, Symbols::OP& op)
+bool Symbol::IsOperator(const string& symbol, Symbols::OP& op)
 {
 	size_t pos = Symbols::operators.find(symbol);
 	if (pos == string::npos)
 	{
-		cerr << "ERROR: CheckOperator() - Symbol '" << symbol << "' not recognised" << endl;
 		return false;
 	}
 	else

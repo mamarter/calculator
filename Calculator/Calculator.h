@@ -13,12 +13,15 @@ public:
 	Calculator(){}
 	~Calculator();
 
+	// Function that completes the evaluation of a mathematical expression
 	void EvaluateExpression(const string& inputToEvaluate);
 
 private:
 
+	// Clears symbols from memory
 	void ClearSymbolsVector();
-	int ParseExpression(string& input);
+	
+	int ParseExpression(const string& input);
 
 	// convert from infix notation relying on order of operations to 
 	// Reverse Polish notation (RPN)

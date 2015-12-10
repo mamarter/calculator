@@ -23,7 +23,7 @@ class Symbol
 {
 public:
 
-	Symbol() : mOp(Symbols::UNDEFINED), mStr("") {}
+	Symbol() : mOp(Symbols::UNDEFINED), mStr() {}
 	Symbol(Symbols::OP op) : mOp(op), mStr(to_string(Symbols::operators[op])){}
 	Symbol(const string& str)
 		:mStr(str) {
@@ -34,15 +34,15 @@ public:
 		:mStr(str), mOp(op) {}
 	~Symbol(){}
 
-	bool isNumber() { return mOp == Symbols::NUMBER; }
+	bool IsNumber() { return mOp == Symbols::NUMBER; }
 
 	const string& GetString() const { return mStr; }
 	const string& SetString() const { return mStr; }
 	Symbols::OP GetType() const { return mOp; }
 	bool isParenthesis() const { return mOp == Symbols::RPAR || mOp == Symbols::LPAR; }
 
-	static bool CheckNumber(const string& symbol);
-	static bool CheckOperator(const string& symbol, Symbols::OP& type);
+	static bool IsNumber(const string& symbol);
+	static bool IsOperator(const string& symbol, Symbols::OP& type);
 
 protected:
 	string mStr;

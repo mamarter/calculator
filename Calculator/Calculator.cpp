@@ -18,54 +18,54 @@ void Calculator::ClearSymbolsVector()
 	vector<Symbol*>::iterator symbolsIt;
 	for (symbolsIt = mSymbolsVector.begin(); symbolsIt != mSymbolsVector.end(); symbolsIt++)
 	{
-		cout << "Delete " << (*symbolsIt)->GetString() << endl;
 		delete *symbolsIt;
 	}
 
-	cout << "Clear mSymbolsVector" << endl;
 	mSymbolsVector.clear();
 }
 
-int Calculator::ParseExpression(string& input)
+int Calculator::ParseExpression(const string& inputToEvaluate)
 {
+	string input = inputToEvaluate;
 	//Removes whitespaces
 	string::iterator end_pos = remove(input.begin(), input.end(), ' ');
 	input.erase(end_pos, input.end());
 
 	//Parse string
 	size_t prev = 0, current;
-	Symbol* newSymbol = NULL;
-	string symbolRead;
+	string inputSymbol;
 	while ((current = input.find_first_of(Symbols::operators, prev)) != string::npos)
 	{
 		if (current > prev) //found number
 		{
-			symbolRead = input.substr(prev, current - prev);
-			if (Symbol::CheckNumber(symbolRead))
+			inputSymbol = input.substr(prev, current - prev);
+			if (Symbol::IsNumber(inputSymbol))
 			{
-				newSymbol = new Number(symbolRead);
-				mSymbolsVector.push_back(newSymbol);
+				mSymbolsVector.push_back(new Number(inputSymbol)); // Number is subclass of Symbol
 			}
 			else{
+				cerr << "ERROR: IsNumber() - Number '" << inputSymbol << "' not recognised" << endl;
 				return Symbols::ERROR;
 			}
 		}
-
-		symbolRead = input[current];
+		
+		// read symbol
+		inputSymbol = input[current];
 		Symbols::OP operatorType;
-		if (Symbol::CheckOperator(symbolRead, operatorType))
+		if (Symbol::IsOperator(inputSymbol, operatorType))
 		{
-			newSymbol = new Operator(symbolRead, operatorType);
+			Symbol* symbolObject = new Operator(inputSymbol, operatorType); // subclass of Symbol
 
 			if (mSymbolsVector.empty() &&
-				!newSymbol->isParenthesis()) // first symbol
+				!symbolObject->isParenthesis()) // first symbol
 			{
 				Symbol* zeroNumber = new Number(0.f);
 				mSymbolsVector.push_back(zeroNumber);
 			}
-			mSymbolsVector.push_back(newSymbol);
+			mSymbolsVector.push_back(symbolObject);
 		}
 		else{
+			cerr << "ERROR: IsOperator() - Symbol '" << inputSymbol << "' not recognised" << endl;
 			return Symbols::ERROR;
 		}
 
@@ -75,12 +75,13 @@ int Calculator::ParseExpression(string& input)
 	if (prev < input.length()) // number after last delimiter
 	{
 		string remainingStr = input.substr(prev, string::npos);
-		if (Symbol::CheckNumber(remainingStr))
+		if (Symbol::IsNumber(remainingStr))
 		{
-			Symbol* newSymbol = new Number(remainingStr);
-			mSymbolsVector.push_back(newSymbol);
+			Symbol* symbolObject = new Number(remainingStr);
+			mSymbolsVector.push_back(symbolObject);
 		}
 		else{
+			cerr << "ERROR: IsNumber() - Number '" << remainingStr << "' not recognised" << endl;
 			return Symbols::ERROR;
 		}
 	}
@@ -90,10 +91,9 @@ int Calculator::ParseExpression(string& input)
 
 void Calculator::EvaluateExpression(const string& inputToEvaluate)
 {
-	string input = inputToEvaluate;
 	double result = 0;
 
-	if (ParseExpression(input) > 0)
+	if (ParseExpression(inputToEvaluate) > 0)
 	{
 		queue<Symbol*> reversedExpression = ConstructRPN();
 		if (!reversedExpression.empty())
@@ -103,6 +103,10 @@ void Calculator::EvaluateExpression(const string& inputToEvaluate)
 				cout << "Result = " << result << endl;
 			}
 		}
+	}
+	else
+	{
+		cerr << "ERROR: ParseExpression() - Error parsing expression '" << inputToEvaluate << "'"<< endl;
 	}
 
 	ClearSymbolsVector();
@@ -197,7 +201,7 @@ bool Calculator::ResolveExpression(queue<Symbol*>& symbolsQueue, double& result)
 	{
 		Symbol* current = symbolsQueue.front();
 		symbolsQueue.pop();
-		if (current->isNumber()) // is number
+		if (current->IsNumber()) // is number
 		{
 			currNumber = static_cast<Number*>(current);
 			if (currNumber)
