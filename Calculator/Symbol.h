@@ -1,3 +1,15 @@
+/**
+*	Author: Maria Marco
+*	E-Mail: maria22mt@gmail.com
+*	Description:
+*	Symbol class is used by Calculator class to store each token. It represents each element found in a 
+*	mathematical expression. A symbol can be either a number (that will be an operand) or an operator of 
+*	the Calculator class. It stores a string as a member variable.
+*	class Number is a subclass of Symbol and represents numbers. It stores a decimal value.
+*	class Operator is a subclass of Symbol and represents an operator. It stores the type of operation
+*	that performs.
+*/
+
 #ifndef _SYMBOL_H
 #define _SYMBOL_H
 

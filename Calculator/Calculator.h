@@ -1,3 +1,14 @@
+/**
+*	Author: Maria Marco
+*	E-Mail: maria22mt@gmail.com
+*	Description:
+*	The Calculator class processes mathematical expressions formed by operators and operands called symbols in this project.
+*	The currently accepted symbols are addition, substraction, multiplication, division, parenthesis and decimal numbers.
+*	To evaluate a string of operations it first converts the expression from infix notation to reverse polish
+*	notation (RPN) relying on order of operations (based on the Shunting-yard algorithm). Then resolves the equation
+*	storing intermediate results in a stack.
+*/
+
 #ifndef _CALCULATOR_H
 #define _CALCULATOR_H
 
