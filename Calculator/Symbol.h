@@ -1,20 +1,23 @@
+#ifndef _SYMBOL_H
+#define _SYMBOL_H
+
 #include <string>
 
 using namespace std;
 
 namespace Symbols
 {
+	//Accepted operators in a expression
 	const string operators = "+-*/()";
-	const int precedence[] = { 0, 0, 1, 1, -1, -1, -1 };
+	//Precedence of operators
+	const int precedence[] = { 0, 0, 1, 1, -1, -1};
 	enum OP{
 		ADD,
 		SUB,
 		MULT,
 		DIV,
 		LPAR,
-		RPAR,
-		NUMBER,
-		UNDEFINED = -1
+		RPAR
 	};
 	const int ERROR = -1;
 }
@@ -23,40 +26,28 @@ class Symbol
 {
 public:
 
-	Symbol() : mOp(Symbols::UNDEFINED), mStr() {}
-	Symbol(Symbols::OP op) : mOp(op), mStr(to_string(Symbols::operators[op])){}
-	Symbol(const string& str)
-		:mStr(str) {
-		size_t pos = Symbols::operators.find(mStr);
-		mOp = static_cast<Symbols::OP>(pos);
-	}
-	Symbol(const string& str, Symbols::OP op)
-		:mStr(str), mOp(op) {}
+	Symbol(const string& inputStr) : mStr(inputStr) {}
 	~Symbol(){}
 
-	bool IsNumber() { return mOp == Symbols::NUMBER; }
-
-	const string& GetString() const { return mStr; }
-	const string& SetString() const { return mStr; }
-	Symbols::OP GetType() const { return mOp; }
-	bool isParenthesis() const { return mOp == Symbols::RPAR || mOp == Symbols::LPAR; }
+	virtual bool IsNumber() { return false; }
+	virtual bool IsParenthesis() const { return false; }
+	virtual bool IsLeftParenthesis() const { return false; }
+	virtual bool IsSignOperator() const { return false; }
 
 	static bool IsNumber(const string& symbol);
 	static bool IsOperator(const string& symbol, Symbols::OP& type);
 
 protected:
 	string mStr;
-	Symbols::OP mOp;
 };
 
 class Number : public Symbol
 {
 public:
-	Number(const string& str);
-	Number() : Symbol(Symbols::NUMBER), mNumber(0.f) {}
-	Number(double number) :mNumber(number), Symbol(to_string(number), Symbols::NUMBER){}
+	Number(double number) : Symbol(to_string(number)), mNumber(number) {}
+	Number(const string& inputStr) : Symbol(inputStr), mNumber(stod(inputStr)) {}
 
-
+	virtual bool IsNumber() { return true; }
 	double GetValue() const { return mNumber; }
 	void SetValue(double value) { mNumber = value; }
 
@@ -67,9 +58,32 @@ private:
 class Operator : public Symbol
 {
 public:
-	Operator(const string& str, Symbols::OP type) : Symbol(str, type) {}
+	Operator(const string& inputStr);
+	Operator(const string& inputStr, Symbols::OP type) : Symbol(inputStr), mType(type) {}
+	
+	Symbols::OP GetType() const { return mType; }
+	virtual bool IsParenthesis() const { return mType == Symbols::RPAR || mType == Symbols::LPAR; }
+	virtual bool IsSignOperator() const { return mType == Symbols::ADD || mType == Symbols::SUB; }
+	virtual bool IsLeftParenthesis() const { return mType == Symbols::LPAR; }
 
-	bool HasLessOrEqualPrecedence(const Operator* op) const { return Symbols::precedence[mOp] <= Symbols::precedence[op->GetType()]; }
-	bool Calculate(const Number* op1, const Number* op2, Number* result);
-	bool IsSignOperator() const { return mOp == Symbols::ADD || mOp == Symbols::SUB; }
+	/** Method that compares precedence of two operators
+	*  @param otherOp is the the operator that has to be compared to
+	*  @return a boolean if the object's precendece is less or equal than the other operator
+	*/
+	bool HasLessOrEqualPrecedence(const Operator* otherOp) const; 
+
+	/** Method that performs the corresponding mathematical operation depending of the type
+	*	of operator of the object
+	*  @param leftOp is the left operand
+	*  @param rightOp is the right operand
+	*  @param result is a pointer to a Number object where the result has to be stored
+	*  @return a boolean whether the operation has been successfuly performed or not
+	*/
+	bool Calculate(const Number* leftOp, const Number* rightOp, Number* result) const;
+
+private:
+	Symbols::OP mType;
+
 };
+
+#endif

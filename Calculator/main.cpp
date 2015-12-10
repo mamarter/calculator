@@ -1,11 +1,10 @@
 
 #include <iostream>
-
 #include "Calculator.h"
-
 
 int main()
 {
+	
 	Calculator calculator;
 	string input;
 
@@ -13,7 +12,6 @@ int main()
 	{
 		calculator.EvaluateExpression(input);
 	}
-
 
 	return EXIT_SUCCESS;
 }
